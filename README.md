@@ -9,7 +9,6 @@ It enables connections from the following source to connect through the tor netw
  - sftp
  - ftp
  - telnet 
- - 
   
 
     $ anomy -h
