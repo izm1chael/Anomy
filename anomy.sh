@@ -69,4 +69,4 @@ EOF
      esac
 done # set positional arguments in their proper place
 
-#[ $# -eq 0 ] && { echo "No Arugment Provided, use -h,  --help for more infomation "; exit 1; }
+[ $# -eq 0 ] && { echo "No Arugment Provided, use -h,  --help for more infomation "; exit 1; }
