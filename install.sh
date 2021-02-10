@@ -11,7 +11,7 @@ fi
 if [ $(dpkg-query -W -f='${Status}' tor 2>/dev/null | grep -c "ok installed") -eq 0 ]; # Check if tor is not installed
 then
   echo "Installing Tor"; # Status Message
-  apt-get install tor; # Install tor
+  apt-get install tor -y; # Install tor
 fi
 
 echo "Checking Torsocks is installed";
@@ -25,7 +25,7 @@ fi
 if [ $(dpkg-query -W -f='${Status}' torsocks 2>/dev/null | grep -c "ok installed") -eq 0 ]; # Check if torsocks is not installed
 then
   echo "Installing Torsocks"; # Status message
-  apt-get install torsocks; # Install torsocks
+  apt-get install torsocks -y; # Install torsocks
 fi
 
 cp anomy.sh /tmp/anomy #Copy anomy to tmp
