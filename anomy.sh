@@ -7,6 +7,8 @@ FTP=`which ftp`
 SFTPP=`which sftp`
 TELNET=`which telnet`
 
+sudo systemctl start tor
+
 while (( "$#" )); do
   case "$1" in
     -w|--wget)
