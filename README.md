@@ -5,9 +5,10 @@ Anomy is a bash application that will route common commands though Tor, anonymiz
 It enables connections from the following source to connect through the tor network:
 
  *  wget  
+ *  curl
  *  ssh  
-*  sftp  
- * ftp  
+ *  sftp  
+ *  ftp  
  *  telnet   
  
   
