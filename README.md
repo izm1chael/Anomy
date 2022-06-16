@@ -20,6 +20,7 @@ It enables connections from the following source to connect through the tor netw
             -h,  --help                      print this help
             Functions:
             -w,  --wget                      wget download
+            -c,  --curl
             -s,  --ssh                       initiate ssh connection
             -f,  --ftp                       initiate ftp session
             -d,  --sftp                      initiate sftp session
