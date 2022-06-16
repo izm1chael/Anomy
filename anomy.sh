@@ -6,6 +6,7 @@ SSH=`which ssh`
 FTP=`which ftp`
 SFTPP=`which sftp`
 TELNET=`which telnet`
+CURL=`which curl`
 
 sudo systemctl start tor
 
@@ -18,6 +19,12 @@ while (( "$#" )); do
         exit;
         fi
       ;;
+    -c|--curl)
+      if [ -n "$2" ]; then
+        $TSOCKS $CURL $2
+        exit;
+        fi
+      ;;      
     -s|--ssh)
       if [ -n "$2" ]; then
         $TSOCKS $SSH $2
@@ -59,6 +66,7 @@ Startup:
 
 Functions:
 -w,  --wget                      wget download
+-c,  --curl
 -s,  --ssh                       initiate ssh connection
 -f,  --ftp                       initiate ftp session
 -d,  --sftp                      initiate sftp session
