@@ -1,32 +1,61 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-echo "Removing Anomy and its dependencies";
-sleep 5; # Wait 5 seconds before cheking apt status
-echo "Checking if Tor is installed"; # Status Message
+set -euo pipefail
 
-if [ $(dpkg-query -W -f='${Status}' tor 2>/dev/null | grep -c "ok installed") -eq 1 ]; # Check if tor is already installed
-then
-  echo "Removing tor" # Status Message
-  apt-get purge tor -y; # Remove tor from system
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root" >&2
+  exit 1
 fi
 
-if [ $(dpkg-query -W -f='${Status}' tor 2>/dev/null | grep -c "ok installed") -eq 0 ]; # Check if tor is not installed
-then
-  echo "Tor is not currently installed"; # Status Message
+PKG_MANAGER=""
+if command -v apt-get >/dev/null 2>&1; then
+  PKG_MANAGER="apt"
+elif command -v yum >/dev/null 2>&1; then
+  PKG_MANAGER="yum"
+elif command -v dnf >/dev/null 2>&1; then
+  PKG_MANAGER="dnf"
+else
+  echo "No supported package manager found (apt, yum, dnf)" >&2
+  exit 1
 fi
 
-echo "Checking if Torsocks is installed";
-sleep 5;  # Wait 5 seconds before cheking apt status
+package_installed() {
+  case $PKG_MANAGER in
+    apt)
+      dpkg-query -W -f='${Status}' "$1" 2>/dev/null | grep -q "ok installed"
+      ;;
+    yum|dnf)
+      rpm -q "$1" >/dev/null 2>&1
+      ;;
+  esac
+}
 
-if [ $(dpkg-query -W -f='${Status}' torsocks 2>/dev/null | grep -c "ok installed") -eq 1 ]; # Check if  torsocks is already installed
-then
-  echo "Removing Torsocks" # Status Message
-  apt-get purge torsocks; # Remove torsocks from system
+remove_package() {
+  case $PKG_MANAGER in
+    apt) apt-get purge -y "$1" ;;
+    yum) yum remove -y "$1" ;;
+    dnf) dnf remove -y "$1" ;;
+  esac
+}
+
+echo "Removing Anomy and its dependencies"
+sleep 5
+
+echo "Checking if Tor is installed"
+if package_installed tor; then
+  echo "Removing Tor"
+  remove_package tor
+else
+  echo "Tor is not currently installed"
 fi
 
-if [ $(dpkg-query -W -f='${Status}' torsocks 2>/dev/null | grep -c "ok installed") -eq 0 ]; # Check if torsocks is not installed
-then
-  echo "Torsocks is not currently installed"; # Status message
+echo "Checking if Torsocks is installed"
+sleep 5
+if package_installed torsocks; then
+  echo "Removing Torsocks"
+  remove_package torsocks
+else
+  echo "Torsocks is not currently installed"
 fi
 
-rm /usr/local/bin/anomy
+rm -f /usr/local/bin/anomy
