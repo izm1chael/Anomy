@@ -1,8 +1,8 @@
 
 # Anomy
-Anomy is a bash application that will route common commands though Tor, anonymizing the traffic. 
+Anomy is a bash application that routes common commands through Tor, anonymizing the traffic.
 
-It enables connections from the following source to connect through the tor network:
+It enables connections from the following sources to connect through the Tor network:
 
  *  wget  
  *  curl
@@ -27,15 +27,17 @@ It enables connections from the following source to connect through the tor netw
             -t,  --telnet                    initiate telnet session
 
 ### Install
-The installation scrip will install both Tor and Torsocks onto the system, if these are already present it will ignore and set up anomy
+The installation script will install both Tor and Torsocks onto the system using the available package manager (`apt`, `yum`, or `dnf`). If these are already present it will ignore them and set up Anomy.
+
+**Note:** the install and uninstall scripts must be run with root privileges.
 
     cd /opt
     git clone https://github.com/izm1chael/Anomy.git
-    cd /Anomy
+    cd Anomy
     sudo bash install.sh  
 
 ### Uninstall
-The uninstallation script will remove both Tor and Torsocks from the systems as well as removing anomy
+The uninstallation script removes Tor and Torsocks (using the detected package manager) as well as Anomy itself.
 
     cd /opt/Anomy
     sudo bash uninstall.sh
